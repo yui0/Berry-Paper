@@ -1,0 +1,75 @@
+#!/bin/sh
+
+NAME="Berry-Paper"
+SIZES="24x24 32x32 48x48"
+
+rm -rf /tmp/$NAME
+mkdir /tmp/$NAME
+#cp -a * /tmp/$NAME
+cp -a *.theme /tmp/$NAME
+cp -a cursors /tmp/$NAME
+cp -a Paper/{24x24,32x32,48x48,symbolic} /tmp/$NAME
+rm -rf /tmp/$NAME/*/apps/
+cp -a Vibrancy-Colors/apps/256 /tmp/$NAME
+cp -a Vibrancy-Colors/actions/24/* /tmp/$NAME/24x24/actions/
+pushd /tmp/$NAME
+
+for size in $SIZES
+do
+	mkdir $size
+	cd $size
+	mkdir -p actions animations apps categories devices emblems mimetypes notifications panel places status web
+	cd ..
+done
+
+# for app icons
+cd 256
+for icon in `find -name "*.png"`
+do
+	if [ -e "$icon" ]; then
+#		SIZES=""
+#		INFO=`identify "$icon"`
+#		echo $INFO|grep 128x128 >/dev/null && SIZES="32x32 48x48 64x64"
+#		echo $INFO|grep 64x64 >/dev/null && SIZES="32x32 48x48 64x64"
+#		echo $INFO|grep 48x48 >/dev/null && SIZES="32x32 48x48"
+#		echo $INFO|grep 32x32 >/dev/null && SIZES="32x32"
+#		echo $INFO|grep 22x22 >/dev/null && SIZES="22x22"
+
+		for size in "48x48" # $SIZES
+		do
+			if [ -h "$icon" ]; then
+#				cp -a "$icon" ../$size/apps/"$icon"
+				link=`readlink $icon`
+				ln -s "$link" ../$size/apps/"$icon"
+			else
+				convert "$icon" -resize $size ../$size/apps/"$icon"
+			fi
+		done
+	else
+		echo warning: "$icon"
+	fi
+done
+cd ..
+rm -rf 256
+
+# for action icons
+#cd symbolic/actions
+#for icon in `find -name "*.svg"`
+#do
+#	if [ -e "$icon" ]; then
+#		for size in "24x24"
+#		do
+#			if [ -h "$icon" ]; then
+#				link=`readlink $icon`
+#				ln -s "${link%%svg}png" ../../$size/actions/"${icon%%svg}png"
+#			else
+#				rsvg-convert "$icon" --format=png --output=../../$size/actions/"${icon%%svg}png"
+#			fi
+#		done
+#	else
+#		echo warning: "$icon"
+#	fi
+#done
+#cd ..
+
+popd
