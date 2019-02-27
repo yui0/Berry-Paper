@@ -8,7 +8,7 @@ rm -rf /tmp/$NAME
 mkdir /tmp/$NAME
 #cp -a * /tmp/$NAME
 #cp -a Paper/{24x24,32x32,48x48,symbolic} /tmp/$NAME
-cp -a Paper/{24x24,48x48,symbolic} /tmp/$NAME
+cp -a Paper/{24x24,48x48,symbolic,scalable} /tmp/$NAME
 cp -a Suru/* /tmp/$NAME
 cp -a *.theme /tmp/$NAME
 cp -a cursors /tmp/$NAME
