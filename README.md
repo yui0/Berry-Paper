@@ -3,6 +3,7 @@
 ## How to build
 
 ```bash
+# dnf install ImageMagick
 $ sh build
 ```
 
